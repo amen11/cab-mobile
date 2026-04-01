@@ -2,7 +2,6 @@ import 'package:cab_app/core/services/notifications_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'core/theme/app_theme.dart';
@@ -29,10 +28,10 @@ Future<void> main() async {
   ));
 
   // Firebase
-  await Firebase.initializeApp();
+  //await Firebase.initializeApp();
 
   // Notifications
-  await NotificationService.initialize();
+  //await NotificationService.initialize();
 
   // Shared prefs
   final prefs = await SharedPreferences.getInstance();
