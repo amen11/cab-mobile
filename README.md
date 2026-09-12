@@ -1,17 +1,37 @@
-# cab_app
+# CAB App — Club Athlétique Bizertin
 
-A new Flutter project.
+A mobile application for **Club Athlétique Bizertin (CAB) fans**, built with Flutter and Sanity.io.
 
-## Getting Started
+## 🛠️ Tech Stack
 
-This project is a starting point for a Flutter application.
+* **Flutter** — Cross-platform mobile development
+* **Sanity.io** — Headless CMS
+* **Provider** — State management
+* **GoRouter** — Navigation
+* **Firebase FCM** — Push notifications
 
-A few resources to get you started if this is your first Flutter project:
+## ✨ Features
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+* 🏟️ Matches, results & match details
+* 📰 News & articles
+* 🎟️ Ticket information for each match
+* 🛍️ Shop with cart & checkout
+* 🌙 Dark & Light mode
+* 🔔 Push notifications
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## 🚀 Getting Started
+
+```bash
+git clone https://github.com/your-username/cab-app.git
+cd cab-app
+flutter pub get
+flutter run
+```
+
+## 📱 Screenshots
+
+*Add screenshots of the application here.*
+
+## 👨‍💻 About
+
+A personal Flutter project developed to provide CAB supporters with a centralized mobile experience for following matches, news, tickets, and club-related content.
