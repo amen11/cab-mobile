@@ -1,7 +1,9 @@
 import 'package:cab_app/core/models/match.dart';
+import 'package:cab_app/core/services/sanity_service.dart';
 import 'package:cab_app/shared/widgets/empty.dart';
 import 'package:cab_app/shared/widgets/error_view.dart';
 import 'package:cab_app/shared/widgets/logo.dart';
+import 'package:cab_app/shared/widgets/network_image.dart';
 import 'package:cab_app/shared/widgets/shimmer.dart';
 import 'package:cab_app/shared/widgets/status_badge.dart';
 import 'package:cab_app/shared/widgets/yellow_tag.dart';
@@ -164,14 +166,7 @@ class _MatchCard extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Container(
-                          width: 36, height: 36,
-                          decoration: BoxDecoration(
-                            color: AppColors.yellowSurface,
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: const Icon(Icons.shield, color: AppColors.yellow, size: 20),
-                        ),
+                        CabLogo(),
                         const SizedBox(height: 6),
                         Text('CAB', style: t.textTheme.titleLarge),
                         Text(match.isHome ? 'Home' : 'Away',
@@ -207,15 +202,8 @@ class _MatchCard extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        Container(
-                          width: 36, height: 36,
-                          decoration: BoxDecoration(
-                            color: t.colorScheme.surfaceVariant,
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: const Icon(Icons.shield_outlined, size: 20,
-                              color: AppColors.darkTextSec),
-                        ),
+                       CabNetworkImage(url: SanityService.imageUrl(match.opponentLogoRef?? '', width: 80),
+                          width: 60, height: 60, fit: BoxFit.contain),
                         const SizedBox(height: 6),
                         Text(match.opponent, style: t.textTheme.titleLarge,
                             textAlign: TextAlign.end, maxLines: 1,

@@ -1,8 +1,11 @@
 import 'package:cab_app/core/models/match.dart';
 import 'package:cab_app/core/providers/match_provider.dart';
+import 'package:cab_app/core/services/sanity_service.dart';
 import 'package:cab_app/core/theme/app_theme.dart';
 import 'package:cab_app/shared/widgets/divider.dart';
 import 'package:cab_app/shared/widgets/error_view.dart';
+import 'package:cab_app/shared/widgets/logo.dart';
+import 'package:cab_app/shared/widgets/network_image.dart';
 import 'package:cab_app/shared/widgets/status_badge.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -91,7 +94,7 @@ class MatchDetailScreen extends StatelessWidget {
                         ),
                       const SizedBox(width: 24),
                       // Opponent
-                      _TeamBlock(name: match.opponent, isHome: !match.isHome),
+                      _TeamBlock(name: match.opponent, isHome: !match.isHome,photoRef: match.opponentLogoRef),
                     ],
                   ),
                 ],
@@ -146,29 +149,19 @@ class _TeamBlock extends StatelessWidget {
   final String name;
   final bool isHome;
   final bool isCAB;
+  final String? photoRef;
  
-  const _TeamBlock({required this.name, required this.isHome, this.isCAB = false});
+  const _TeamBlock({required this.name, required this.isHome, this.isCAB = false, this.photoRef});
  
   @override
   Widget build(BuildContext context) {
     final t = Theme.of(context);
     return Column(
       children: [
-        Container(
-          width: 64, height: 64,
-          decoration: BoxDecoration(
-            color: isCAB ? AppColors.yellowSurface : t.colorScheme.surfaceVariant,
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(
-              color: isCAB ? AppColors.yellow.withOpacity(0.4) : t.dividerColor,
-            ),
-          ),
-          child: Icon(
-            isCAB ? Icons.shield : Icons.shield_outlined,
-            size: 32,
-            color: isCAB ? AppColors.yellow : AppColors.darkTextSec,
-          ),
-        ),
+        isCAB ? CabLogo(): 
+        CabNetworkImage(url: SanityService.imageUrl(photoRef ?? '',width: 40)),
+      
+        
         const SizedBox(height: 8),
         SizedBox(
           width: 80,

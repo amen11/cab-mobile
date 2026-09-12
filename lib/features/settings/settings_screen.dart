@@ -39,14 +39,7 @@ class SettingsScreen extends StatelessWidget {
                 ),
                 child: Row(
                   children: [
-                    Container(
-                      width: 56, height: 56,
-                      decoration: BoxDecoration(
-                        color: AppColors.black.withOpacity(0.15),
-                        borderRadius: BorderRadius.circular(14),
-                      ),
-                      child: const Icon(Icons.shield, color: AppColors.black, size: 28),
-                    ),
+                   CabLogo(size: 56),
                     const SizedBox(width: 16),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -459,7 +452,7 @@ class _AboutSheet extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              _StatChip(label: 'Founded', value: '1913'),
+              _StatChip(label: 'Founded', value: '1928'),
               _StatChip(label: 'City', value: 'Bizerte'),
               _StatChip(label: 'Stadium', value: 'Stade 15-Oct'),
             ],

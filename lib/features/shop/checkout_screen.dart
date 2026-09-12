@@ -32,72 +32,72 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   }
 
   Future<void> _submitOrder(BuildContext context) async {
-    if (!_formKey.currentState!.validate()) return;
-    setState(() => _loading = true);
+  if (!_formKey.currentState!.validate()) return;
+  setState(() => _loading = true);
 
-    final success = await context.read<CartProvider>().submitOrder(
-      name: _nameCtrl.text.trim(),
-      phone: _phoneCtrl.text.trim(),
-      address: _paymentMethod == 'cod' ? _addressCtrl.text.trim() : null,
-      paymentMethod: _paymentMethod,
-    );
+  final cart = context.read<CartProvider>();
 
-    setState(() => _loading = false);
+  final success = await cart.submitOrder(
+    name: _nameCtrl.text.trim(),
+    phone: _phoneCtrl.text.trim(),
+    address: _paymentMethod == 'cod' ? _addressCtrl.text.trim() : null,
+    paymentMethod: _paymentMethod,
+  );
 
-    if (success) {
-      if (context.mounted) {
-        showDialog(
-          context: context,
-          barrierDismissible: false,
-          builder: (_) => AlertDialog(
-            backgroundColor: Theme.of(context).colorScheme.surface,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(
-                  width: 64, height: 64,
-                  decoration: BoxDecoration(
-                    color: AppColors.successSurface,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: const Icon(Icons.check, color: AppColors.success, size: 32),
-                ),
-                const SizedBox(height: 16),
-                Text('Order Placed!',
-                    style: Theme.of(context).textTheme.headlineSmall,
-                    textAlign: TextAlign.center),
-                const SizedBox(height: 8),
-                Text(
-                  'Your order has been received. We will contact you at ${_phoneCtrl.text} to confirm.',
-                  style: Theme.of(context).textTheme.bodyMedium,
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: () {
-                    context.go('/shop');
-                  },
-                  child: const Text('BACK TO SHOP'),
-                ),
-              ],
+  if (!mounted) return; // ← GUARD — widget may be gone after await
+  setState(() => _loading = false);
+
+  if (success) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (dialogContext) => AlertDialog(  // ← use dialogContext, not context
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: 64, height: 64,
+              decoration: BoxDecoration(
+                color: AppColors.successSurface,
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: const Icon(Icons.check, color: AppColors.success, size: 32),
             ),
-          ),
-        );
-      }
-    } else {
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Failed to place order. Please try again.'),
-            backgroundColor: AppColors.error,
-            behavior: SnackBarBehavior.floating,
-          ),
-        );
-      }
-    }
+            const SizedBox(height: 16),
+            Text('Order Placed!',
+                style: Theme.of(context).textTheme.headlineSmall,
+                textAlign: TextAlign.center),
+            const SizedBox(height: 8),
+            Text(
+              'Your order has been received. We will contact you at ${_phoneCtrl.text} to confirm.',
+              style: Theme.of(context).textTheme.bodyMedium,
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(dialogContext).pop(); // ← close dialog first
+                if (mounted) context.go('/shop'); // ← then navigate
+              },
+              child: const Text('BACK TO SHOP'),
+            ),
+          ],
+        ),
+      ),
+    );
+  } else {
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Failed to place order. Please try again.'),
+        backgroundColor: AppColors.error,
+        behavior: SnackBarBehavior.floating,
+      ),
+    );
   }
-
+}
   @override
   Widget build(BuildContext context) {
     final t = Theme.of(context);

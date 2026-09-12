@@ -4,7 +4,7 @@ class MatchModel {
   final DateTime date;
   final String? stadium;
   final bool isHome;
-  final String status; // upcoming | live | finished
+  final String status;
   final int? scoreCAB;
   final int? scoreOpponent;
   final String? competition;
@@ -25,7 +25,7 @@ class MatchModel {
  
   factory MatchModel.fromJson(Map<String, dynamic> json) => MatchModel(
         id: json['_id'],
-        opponent: json['opponent'],
+        opponent: json['opponent'] ?? 'Unknown',
         date: DateTime.parse(json['date']),
         stadium: json['stadium'],
         isHome: json['isHome'] ?? true,
@@ -33,6 +33,8 @@ class MatchModel {
         scoreCAB: json['scoreCAB'],
         scoreOpponent: json['scoreOpponent'],
         competition: json['competition'],
+        // opponentLogo asset _ref — NOT dereferenced in GROQ so still has _ref
         opponentLogoRef: json['opponentLogo']?['asset']?['_ref'],
       );
 }
+ 

@@ -1,7 +1,7 @@
 class TicketModel {
   final String id;
-  final String matchId;
-  final String type; // virage | pelouse | tribune
+  final String matchId; // the _id of the referenced match document
+  final String type;
   final double price;
   final String? gate;
   final String? instructions;
@@ -17,13 +17,26 @@ class TicketModel {
     this.available = true,
   });
  
-  factory TicketModel.fromJson(Map<String, dynamic> json) => TicketModel(
-        id: json['_id'],
-        matchId: json['match']?['_ref'] ?? '',
-        type: json['type'],
-        price: (json['price'] as num).toDouble(),
-        gate: json['gate'],
-        instructions: json['instructions'],
-        available: json['available'] ?? true,
-      );
+  factory TicketModel.fromJson(Map<String, dynamic> json) {
+    // GROQ query uses:  match->{_id}
+    // This DEREFERENCES the match so json['match'] = { '_id': '...' }
+    // NOT json['match'] = { '_ref': '...' }  ← that would be without ->
+    final matchData = json['match'];
+    String matchId = '';
+    if (matchData is Map) {
+      // Dereferenced: match->{_id}  →  { '_id': '...' }
+      matchId = matchData['_id'] as String? ?? '';
+    }
+ 
+    return TicketModel(
+      id: json['_id'],
+      matchId: matchId,
+      type: json['type'] ?? 'virage',
+      price: (json['price'] as num?)?.toDouble() ?? 0,
+      gate: json['gate'],
+      instructions: json['instructions'],
+      available: json['available'] ?? true,
+    );
+  }
 }
+ 
